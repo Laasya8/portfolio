@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laasya Portfolio</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <meta name="description"
+    content="Portfolio of Cheerla Sai Laasya Priya — Developer, Tech Enthusiast, and Problem Solver. Explore my projects, skills, and experience.">
+  <meta name="keywords" content="developer, portfolio, web development, programming, Cheerla Sai Laasya Priya">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- Interactive background glow -->
+  <div id="mouse-glow"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#hero" class="nav-logo">
+        <span class="logo-bracket">{</span>
+        Laasya<span class="logo-dot">.</span>
+        <span class="logo-bracket">}</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#github">GitHub</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <canvas class="hero-particles" id="particles"></canvas>
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="dot"></span>
+            <span>Open to Opportunities</span>
+          </div>
+          <h1>Hi, I'm <span class="gradient-text">Cheerla Sai Laasya Priya</span></h1>
+          <p class="tagline">I am <span id="typewriter" class="gradient-text"></span><span class="cursor">|</span></p>
+          <div class="hero-buttons">
+            <a href="#projects" class="btn btn-primary">
+              <i class="fas fa-rocket"></i> View Projects
+            </a>
+            <a href="Laasya_resume.pdf" download class="btn btn-download">
+              <i class="fas fa-download"></i> Download Resume
+            </a>
+          </div>
+          <div class="hero-social">
+            <a href="https://github.com/Laasya8" target="_blank" class="btn-icon" aria-label="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/sai-laasya-priya/" target="_blank" class="btn-icon"
+              aria-label="LinkedIn">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a href="mailto:laasya1106@gmail.com" class="btn-icon" aria-label="Email">
+              <i class="fas fa-envelope"></i>
+            </a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <div class="image-wrapper">
+            <img src="profile.jpg" alt="Cheerla Sai Laasya Priya">
+            <div class="image-glow"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <h2>About Me</h2>
+        <p>Passionate about building meaningful digital experiences</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-text animate-on-scroll">
+          <p>
+            I'm <strong>Cheerla Sai Laasya Priya</strong>, a developer driven by curiosity and a love for technology.
+            I enjoy turning complex problems into clean, user-friendly solutions.
+          </p>
+          <p>
+            With a strong foundation in modern development practices, I continuously explore new frameworks,
+            tools, and paradigms. I believe in writing code that is not only functional but also elegant and
+            maintainable.
+          </p>
+          <p>
+            When I'm not coding, you'll find me exploring the latest in tech, contributing to open-source projects,
+            or learning something new. I'm always excited to collaborate on projects that make a positive impact.
+          </p>
+        </div>
+        <div class="about-highlights animate-on-scroll">
+          <div class="glass-card highlight-card">
+            <div class="icon">🚀</div>
+            <h4>Problem Solver</h4>
+            <p>Analytical thinking & creative solutions</p>
+          </div>
+          <div class="glass-card highlight-card">
+            <div class="icon">💻</div>
+            <h4>Developer</h4>
+            <p>Full-stack development enthusiast</p>
+          </div>
+          <div class="glass-card highlight-card">
+            <div class="icon">📚</div>
+            <h4>Learner</h4>
+            <p>Constantly exploring new tech</p>
+          </div>
+          <div class="glass-card highlight-card">
+            <div class="icon">🤝</div>
+            <h4>Team Player</h4>
+            <p>Collaboration & communication</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="section-divider"></div>
+
+  <!-- Skills Section -->
+  <section class="section" id="skills">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <h2>Skills & Technologies</h2>
+        <p>Tools and technologies I work with</p>
+      </div>
+      <div class="skills-grid">
+        <div class="glass-card skill-card animate-on-scroll">
+          <div class="skill-icon"><i class="fab fa-python"></i></div>
+          <h4>Python</h4>
+          <p>Backend & Scripting</p>
+        </div>
+        <div class="glass-card skill-card animate-on-scroll">
+          <div class="skill-icon"><i class="fab fa-java"></i></div>
+          <h4>Java</h4>
+          <p>OOP & Applications</p>
+        </div>
+        <div class="glass-card skill-card animate-on-scroll">
+          <div class="skill-icon"><i class="fab fa-js-square"></i></div>
+          <h4>JavaScript</h4>
+          <p>Web Development</p>
+        </div>
+        <div class="glass-card skill-card animate-on-scroll">
+          <div class="skill-icon"><i class="fab fa-html5"></i></div>
+          <h4>HTML & CSS</h4>
+          <p>Frontend Design</p>
+        </div>
+        <div class="glass-card skill-card animate-on-scroll">
+          <div class="skill-icon"><i class="fab fa-react"></i></div>
+          <h4>React</h4>
+          <p>UI Development</p>
+        </div>
+        <div class="glass-card skill-card animate-on-scroll">
+          <div class="skill-icon"><i class="fab fa-node-js"></i></div>
+          <h4>Node.js</h4>
+          <p>Server-side JS</p>
+        </div>
+        <div class="glass-card skill-card animate-on-scroll">
+          <div class="skill-icon"><i class="fas fa-database"></i></div>
+          <h4>SQL</h4>
+          <p>Database Management</p>
+        </div>
+        <div class="glass-card skill-card animate-on-scroll">
+          <div class="skill-icon"><i class="fab fa-git-alt"></i></div>
+          <h4>Git</h4>
+          <p>Version Control</p>
+        </div>
+        <div class="glass-card skill-card animate-on-scroll">
+          <div class="skill-icon"><i class="fas fa-code"></i></div>
+          <h4>C/C++</h4>
+          <p>Systems Programming</p>
+        </div>
+        <div class="glass-card skill-card animate-on-scroll">
+          <div class="skill-icon"><i class="fas fa-brain"></i></div>
+          <h4>Data Structures</h4>
+          <p>Algorithms & DSA</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="section-divider"></div>
+
+  <!-- Projects Section -->
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <h2>Featured Projects</h2>
+        <p>Some of the things I've built</p>
+      </div>
+      <div class="projects-grid">
+        <div class="glass-card project-card animate-on-scroll">
+          <div class="project-card-header">
+            <div class="project-icon">🛍️</div>
+            <a href="https://github.com/Laasya8/Ecommerce" target="_blank" class="project-link"><i
+                class="fas fa-external-link-alt"></i></a>
+          </div>
+          <div class="project-card-body">
+            <h3>LuxeStyle E-Commerce</h3>
+            <p>A premium fashion e-commerce platform with minimalist aesthetics, full shopping flow, JWT-based
+              authentication, and a RESTful API for products, users, and orders.</p>
+            <div class="project-tags">
+              <span class="project-tag">Node.js</span>
+              <span class="project-tag">SQLite</span>
+              <span class="project-tag">JWT</span>
+              <span class="project-tag">REST API</span>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card project-card animate-on-scroll">
+          <div class="project-card-header">
+            <div class="project-icon">🌾</div>
+            <a href="https://github.com/Laasya8/Agrichain" target="_blank" class="project-link"><i
+                class="fas fa-external-link-alt"></i></a>
+          </div>
+          <div class="project-card-body">
+            <h3>AgriChain</h3>
+            <p>A farm-to-table supply chain tracker with role-based access, QR code scanning, blockchain verification,
+              Firebase sync, and a mobile-first responsive dashboard.</p>
+            <div class="project-tags">
+              <span class="project-tag">React</span>
+              <span class="project-tag">Firebase</span>
+              <span class="project-tag">Blockchain</span>
+              <span class="project-tag">Tailwind CSS</span>
+            </div>
+          </div>
+        </div>
+        <div class="glass-card project-card animate-on-scroll">
+          <div class="project-card-header">
+            <div class="project-icon">🏛️</div>
+            <a href="https://github.com/Laasya8/GenSathi" target="_blank" class="project-link"><i
+                class="fas fa-external-link-alt"></i></a>
+          </div>
+          <div class="project-card-body">
+            <h3>GenSathi</h3>
+            <p>A civic complaint management platform with smart duplicate detection, gamified XP system, real-time map
+              tracking, community upvoting, and proof-based resolution.</p>
+            <div class="project-tags">
+              <span class="project-tag">Next.js</span>
+              <span class="project-tag">Firestore</span>
+              <span class="project-tag">Maps API</span>
+              <span class="project-tag">Cloudinary</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="section-divider"></div>
+
+  <!-- GitHub Section -->
+  <section class="section github-section" id="github">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <h2>GitHub Activity</h2>
+        <p>Check out my open-source contributions</p>
+      </div>
+      <div class="glass-card github-card animate-on-scroll">
+        <div class="github-icon"><i class="fab fa-github"></i></div>
+        <h3>@Laasya8</h3>
+        <p>Building cool stuff, one commit at a time. Explore my repositories to see what I've been working on.</p>
+        <div class="github-stats">
+          <div class="stat-item">
+            <div class="stat-number">10+</div>
+            <div class="stat-label">Repositories</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">50+</div>
+            <div class="stat-label">Contributions</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">5+</div>
+            <div class="stat-label">Languages</div>
+          </div>
+        </div>
+        <a href="https://github.com/Laasya8" target="_blank" class="btn btn-primary">
+          <i class="fab fa-github"></i> View GitHub Profile
+        </a>
+      </div>
+    </div>
+  </section>
+  <div class="section-divider"></div>
+
+  <!-- Contact Section -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-header animate-on-scroll">
+        <h2>Get In Touch</h2>
+        <p>Have a project in mind? Let's talk!</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info animate-on-scroll">
+          <h3>Let's Connect</h3>
+          <p>I'm always open to new opportunities, collaborations, or just a friendly chat about technology.</p>
+          <div class="contact-item">
+            <div class="icon-wrap"><i class="fas fa-envelope"></i></div>
+            <div>
+              <div class="label">Email</div>
+              <a href="mailto:laasya1106@gmail.com" class="value">laasya1106@gmail.com</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="icon-wrap"><i class="fab fa-github"></i></div>
+            <div>
+              <div class="label">GitHub</div>
+              <a href="https://github.com/Laasya8" target="_blank" class="value">github.com/Laasya8</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="icon-wrap"><i class="fab fa-linkedin-in"></i></div>
+            <div>
+              <div class="label">LinkedIn</div>
+              <a href="https://www.linkedin.com/in/sai-laasya-priya/" target="_blank" class="value">sai-laasya-priya</a>
+            </div>
+          </div>
+        </div>
+        <form class="contact-form glass-card animate-on-scroll" id="contactForm"
+          action="https://formspree.io/f/mreyeovy" method="POST" style="padding: 32px;">
+          <div class="form-group">
+            <input type="text" name="name" placeholder="Your Name" required>
+          </div>
+          <div class="form-group">
+            <input type="email" name="email" placeholder="Your Email" required>
+          </div>
+          <div class="form-group">
+            <input type="text" name="subject" placeholder="Subject">
+          </div>
+          <div class="form-group">
+            <textarea name="message" placeholder="Your Message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            <i class="fas fa-paper-plane"></i> Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2026 Cheerla Sai Laasya Priya. All rights reserved.</p>
+        <div class="footer-social">
+          <a href="https://github.com/Laasya8" target="_blank" class="btn-icon" aria-label="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/sai-laasya-priya/" target="_blank" class="btn-icon"
+            aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="mailto:laasya1106@gmail.com" class="btn-icon" aria-label="Email">
+            <i class="fas fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
