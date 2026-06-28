@@ -236,3 +236,275 @@ document.querySelectorAll('.glass-card').forEach((card) => {
   });
 });
 
+// ===== AI Chatbot Widget =====
+(function () {
+  const chatbotFab = document.getElementById('chatbotFab');
+  const chatbotWindow = document.getElementById('chatbotWindow');
+  const chatbotClose = document.getElementById('chatbotClose');
+  const chatbotInput = document.getElementById('chatbotInput');
+  const chatbotSend = document.getElementById('chatbotSend');
+  const chatbotMessages = document.getElementById('chatbotMessages');
+  const chatbotSuggestions = document.getElementById('chatbotSuggestions');
+
+  if (!chatbotFab || !chatbotWindow) return;
+
+  let isOpen = false;
+  let hasGreeted = false;
+
+  // Knowledge base about Laasya
+  const knowledge = {
+    about: "I'm Cheerla Sai Laasya Priya — a developer driven by curiosity and a love for technology. I enjoy turning complex problems into clean, user-friendly solutions. With a strong foundation in modern development practices, I continuously explore new frameworks, tools, and paradigms. I believe in writing code that is not only functional but also elegant and maintainable.",
+    skills: "Laasya is skilled in: Python (Backend & Scripting), Java (OOP & Applications), JavaScript (Web Development), HTML & CSS (Frontend Design), React (UI Development), Node.js (Server-side JS), SQL (Database Management), Git (Version Control), C/C++ (Systems Programming), and Data Structures & Algorithms.",
+    projects: {
+      luxestyle: "🛍️ LuxeStyle E-Commerce — A premium fashion e-commerce platform with minimalist aesthetics, full shopping flow, JWT-based authentication, and a RESTful API. Built with Node.js, SQLite, JWT, and REST API.",
+      agrichain: "🌾 AgriChain — A farm-to-table supply chain tracker with role-based access, QR code scanning, blockchain verification, Firebase sync, and a mobile-first responsive dashboard. Built with React, Firebase, Blockchain, and Tailwind CSS.",
+      gensathi: "🏛️ GenSathi — A civic complaint management platform with smart duplicate detection, gamified XP system, real-time map tracking, community upvoting, and proof-based resolution. Built with Next.js, Firestore, Maps API, and Cloudinary."
+    },
+    contact: "You can reach Laasya at:\n📧 Email: laasya1106@gmail.com\n🔗 GitHub: github.com/Laasya8\n💼 LinkedIn: linkedin.com/in/sai-laasya-priya/",
+    github: "Laasya's GitHub profile is @Laasya8 with 10+ repositories, 50+ contributions, and proficiency in 5+ languages. She's always building cool stuff, one commit at a time!",
+    resume: "You can download Laasya's resume directly from this portfolio! Look for the 'Download Resume' button in the hero section at the top of the page.",
+    highlights: "Laasya is a Problem Solver (analytical thinking & creative solutions), a Developer (full-stack development enthusiast), a Learner (constantly exploring new tech), and a Team Player (collaboration & communication)."
+  };
+
+  // Normalize text to handle typos: collapse repeated chars, strip noise
+  function normalize(str) {
+    return str
+      .toLowerCase()
+      .replace(/(.)\1+/g, '$1')   // "maail" -> "mail", "helllo" -> "helo"
+      .replace(/[^a-z0-9\s]/g, '') // strip special chars
+      .trim();
+  }
+
+  // Test a regex against BOTH raw and normalized input
+  function fuzzyTest(regex, raw, norm) {
+    return regex.test(raw) || regex.test(norm);
+  }
+
+  // Fuzzy keyword scoring: check how many topic keywords appear in the text
+  function keywordScore(text, keywords) {
+    const norm = normalize(text);
+    let score = 0;
+    for (const kw of keywords) {
+      if (norm.includes(kw) || text.includes(kw)) score++;
+    }
+    return score;
+  }
+
+  function getResponse(input) {
+    const q = input.toLowerCase().trim();
+    const qn = normalize(q);
+
+    // Greetings
+    if (fuzzyTest(/^(hi|hello|hey|hola|greetings|sup|yo|howdy)/i, q, qn)) {
+      return "Hello! 👋 I'm Laasya's AI assistant. I can tell you about her skills, projects, experience, and more. What would you like to know?";
+    }
+
+    // About
+    if (fuzzyTest(/about|who is|tel.? me about|introduce|background|herself|bio/i, q, qn)) {
+      return knowledge.about;
+    }
+
+    // Skills
+    if (fuzzyTest(/skil|tech|technolog|stack|proficien|language|framework|tool|what (does|can) she (do|use|know)/i, q, qn)) {
+      return knowledge.skills;
+    }
+
+    // Specific project queries
+    if (fuzzyTest(/luxe|e-?commerce|ecommerce|fashion|shopping/i, q, qn)) {
+      return knowledge.projects.luxestyle;
+    }
+    if (fuzzyTest(/agri|farm|supply chain|blockchain|qr/i, q, qn)) {
+      return knowledge.projects.agrichain;
+    }
+    if (fuzzyTest(/gen\s?sathi|civic|complaint|gamif/i, q, qn)) {
+      return knowledge.projects.gensathi;
+    }
+
+    // General projects
+    if (fuzzyTest(/project|built|portfolio|work|created|developed|made/i, q, qn)) {
+      return "Laasya has built some amazing projects:\n\n" +
+        knowledge.projects.luxestyle + "\n\n" +
+        knowledge.projects.agrichain + "\n\n" +
+        knowledge.projects.gensathi;
+    }
+
+    // Contact / Email
+    if (fuzzyTest(/contact|reach|e?mail|connect|linkedin|hire|get in touch|message her|write to/i, q, qn)) {
+      return knowledge.contact;
+    }
+
+    // GitHub
+    if (fuzzyTest(/github|git|repo|open.?source|contribution/i, q, qn)) {
+      return knowledge.github;
+    }
+
+    // Resume
+    if (fuzzyTest(/resume|cv|download|document|pdf/i, q, qn)) {
+      return knowledge.resume;
+    }
+
+    // Education
+    if (fuzzyTest(/education|college|university|degree|study|student|learn/i, q, qn)) {
+      return "Laasya has a strong academic foundation in computer science and technology. She's continuously learning and exploring new areas in tech, from web development to data science.";
+    }
+
+    // Interests
+    if (fuzzyTest(/interest|hobby|hobbies|passion|love|enjoy|free time/i, q, qn)) {
+      return "When Laasya isn't coding, she's exploring the latest in tech, contributing to open-source projects, or learning something new. She's always excited to collaborate on projects that make a positive impact! 🚀";
+    }
+
+    // Highlights / strengths
+    if (fuzzyTest(/strength|highlight|quality|qualities|good at/i, q, qn)) {
+      return knowledge.highlights;
+    }
+
+    // Thank you
+    if (fuzzyTest(/thank|thanks|thx|appreciate|grateful/i, q, qn)) {
+      return "You're welcome! 😊 Feel free to ask anything else about Laasya, or check out the portfolio sections above. Have a great day!";
+    }
+
+    // Goodbye
+    if (fuzzyTest(/bye|goodbye|see you|later|cya/i, q, qn)) {
+      return "Goodbye! 👋 Thanks for visiting Laasya's portfolio. Feel free to come back anytime or reach out via the contact section!";
+    }
+
+    // Data Science
+    if (fuzzyTest(/data\s?science|machine\s?learning|ml|ai|artificial|deep\s?learning/i, q, qn)) {
+      return "Laasya is a Data Science specialist! She has expertise in Python for data analysis and scripting, and continuously explores machine learning and AI technologies. Check out her projects for hands-on implementations!";
+    }
+
+    // Availability
+    if (fuzzyTest(/available|open to|looking for|opportunit|hire|hiring|freelance|intern/i, q, qn)) {
+      return "Yes! Laasya is currently open to opportunities. 🟢 Whether it's internships, collaborations, or full-time roles — she'd love to connect! Reach out at laasya1106@gmail.com or through LinkedIn.";
+    }
+
+    // Fuzzy keyword fallback: try to match the best topic even with heavy typos
+    const topicScores = [
+      { score: keywordScore(q, ['about', 'who', 'her', 'bio', 'intro', 'herself']), response: knowledge.about },
+      { score: keywordScore(q, ['skil', 'tech', 'stack', 'language', 'python', 'java', 'react', 'node', 'sql', 'git', 'html', 'css', 'code']), response: knowledge.skills },
+      { score: keywordScore(q, ['project', 'built', 'made', 'create', 'develop', 'luxe', 'agri', 'sathi']), response: "Laasya has built some amazing projects:\n\n" + knowledge.projects.luxestyle + "\n\n" + knowledge.projects.agrichain + "\n\n" + knowledge.projects.gensathi },
+      { score: keywordScore(q, ['contact', 'mail', 'email', 'reach', 'connect', 'linkedin', 'phone', 'message']), response: knowledge.contact },
+      { score: keywordScore(q, ['github', 'git', 'repo', 'open source', 'commit']), response: knowledge.github },
+      { score: keywordScore(q, ['resume', 'cv', 'download', 'pdf']), response: knowledge.resume },
+      { score: keywordScore(q, ['hire', 'available', 'opportunity', 'intern', 'freelance', 'job', 'work with']), response: "Yes! Laasya is currently open to opportunities. 🟢 Whether it's internships, collaborations, or full-time roles — she'd love to connect! Reach out at laasya1106@gmail.com or through LinkedIn." },
+    ];
+
+    const bestMatch = topicScores.reduce((best, t) => t.score > best.score ? t : best, { score: 0, response: null });
+    if (bestMatch.score > 0) {
+      return bestMatch.response;
+    }
+
+    // Default fallback
+    const fallbacks = [
+      "That's a great question! I'm best at answering about Laasya's skills, projects, and background. Try asking about those! 💡",
+      "Hmm, I'm not sure about that one. But I can tell you all about Laasya's projects, skills, or how to contact her! 🤔",
+      "I'd love to help! Try asking me about Laasya's projects, tech stack, or how to get in touch with her. 😊"
+    ];
+    return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+  }
+
+  function addMessage(text, type) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `chatbot-msg ${type}`;
+
+    if (type === 'bot') {
+      msgDiv.innerHTML = `
+        <img src="chatbot-avatar.png" alt="AI" class="chatbot-msg-avatar">
+        <div class="chatbot-msg-bubble">${text.replace(/\n/g, '<br>')}</div>
+      `;
+    } else {
+      msgDiv.innerHTML = `
+        <div class="chatbot-msg-bubble">${text.replace(/\n/g, '<br>')}</div>
+      `;
+    }
+
+    chatbotMessages.appendChild(msgDiv);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  }
+
+  function showTyping() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'chatbot-msg bot';
+    typingDiv.id = 'chatbot-typing';
+    typingDiv.innerHTML = `
+      <img src="chatbot-avatar.png" alt="AI" class="chatbot-msg-avatar">
+      <div class="chatbot-msg-bubble chatbot-typing">
+        <span></span><span></span><span></span>
+      </div>
+    `;
+    chatbotMessages.appendChild(typingDiv);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  }
+
+  function removeTyping() {
+    const typing = document.getElementById('chatbot-typing');
+    if (typing) typing.remove();
+  }
+
+  function handleSend() {
+    const text = chatbotInput.value.trim();
+    if (!text) return;
+
+    addMessage(text, 'user');
+    chatbotInput.value = '';
+
+    // Hide suggestions after first message
+    if (chatbotSuggestions) {
+      chatbotSuggestions.style.display = 'none';
+    }
+
+    // Show typing indicator
+    showTyping();
+
+    // Simulate response delay
+    const delay = 600 + Math.random() * 800;
+    setTimeout(() => {
+      removeTyping();
+      const response = getResponse(text);
+      addMessage(response, 'bot');
+    }, delay);
+  }
+
+  // Toggle chat window
+  chatbotFab.addEventListener('click', () => {
+    isOpen = !isOpen;
+    chatbotWindow.classList.toggle('open', isOpen);
+
+    if (isOpen && !hasGreeted) {
+      hasGreeted = true;
+      setTimeout(() => {
+        addMessage("Hello! 👋 I'm Laasya's AI assistant. I can help you explore her portfolio, learn about her skills, or find her projects. What would you like to know?", 'bot');
+      }, 400);
+    }
+
+    if (isOpen) {
+      setTimeout(() => chatbotInput.focus(), 400);
+    }
+  });
+
+  // Close chat
+  chatbotClose.addEventListener('click', () => {
+    isOpen = false;
+    chatbotWindow.classList.remove('open');
+  });
+
+  // Send on button click
+  chatbotSend.addEventListener('click', handleSend);
+
+  // Send on Enter key
+  chatbotInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSend();
+    }
+  });
+
+  // Suggestion pill clicks
+  document.querySelectorAll('.chatbot-suggestion-pill').forEach((pill) => {
+    pill.addEventListener('click', () => {
+      const msg = pill.getAttribute('data-msg');
+      chatbotInput.value = msg;
+      handleSend();
+    });
+  });
+})();

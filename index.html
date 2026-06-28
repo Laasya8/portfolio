@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Laasya Portfolio</title>
+  <title>Laasya Priya</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <meta name="description"
     content="Portfolio of Cheerla Sai Laasya Priya — Developer, Tech Enthusiast, and Problem Solver. Explore my projects, skills, and experience.">
@@ -60,7 +60,7 @@
             <a href="#projects" class="btn btn-primary">
               <i class="fas fa-rocket"></i> View Projects
             </a>
-            <a href="Laasya_resume.pdf" download class="btn btn-download">
+            <a href="LaasyaPriya.pdf" download class="btn btn-download">
               <i class="fas fa-download"></i> Download Resume
             </a>
           </div>
@@ -375,6 +375,46 @@
       </div>
     </div>
   </footer>
+
+  <!-- AI Chatbot Agent -->
+  <div id="chatbot-widget">
+    <!-- Floating Button -->
+    <button class="chatbot-fab" id="chatbotFab" aria-label="Open AI Assistant">
+      <img src="chatbot-avatar.png" alt="AI Assistant" class="chatbot-fab-avatar">
+      <span class="chatbot-fab-pulse"></span>
+    </button>
+
+    <!-- Chat Window -->
+    <div class="chatbot-window" id="chatbotWindow">
+      <div class="chatbot-header">
+        <div class="chatbot-header-info">
+          <img src="chatbot-avatar.png" alt="Laasya AI" class="chatbot-header-avatar">
+          <div>
+            <div class="chatbot-header-name">Laasya's AI Assistant</div>
+            <div class="chatbot-header-status"><span class="chatbot-status-dot"></span> Online • Portfolio Guide</div>
+          </div>
+        </div>
+        <button class="chatbot-close" id="chatbotClose" aria-label="Close chat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="chatbot-messages" id="chatbotMessages">
+        <!-- Welcome message injected by JS -->
+      </div>
+      <div class="chatbot-suggestions" id="chatbotSuggestions">
+        <button class="chatbot-suggestion-pill" data-msg="Tell me about Laasya">About Laasya</button>
+        <button class="chatbot-suggestion-pill" data-msg="What are her skills?">Skills & Tech</button>
+        <button class="chatbot-suggestion-pill" data-msg="Show me her projects">Projects</button>
+        <button class="chatbot-suggestion-pill" data-msg="How can I contact her?">Contact Info</button>
+      </div>
+      <div class="chatbot-input-area">
+        <input type="text" id="chatbotInput" placeholder="Ask me anything about Laasya..." autocomplete="off">
+        <button class="chatbot-send" id="chatbotSend" aria-label="Send message">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
