@@ -13,11 +13,40 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Styles -->
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="border-glow.css">
+
+  <!-- Synchronous Theme Initialization to prevent FOUC -->
+  <script>
+    if (localStorage.getItem('portfolio-theme') === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  </script>
 </head>
 
 <body>
+
+  <!-- Elegant Cinematic Loader -->
+  <div class="cinematic-loader" id="cinematicLoader">
+    <div id="lightfallContainer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;">
+    </div>
+    <div class="loader-curtain loader-curtain--top"></div>
+    <div class="loader-curtain loader-curtain--bottom"></div>
+    <div class="loader-glow"></div>
+    <div class="loader-center">
+      <div class="loader-name-wrap">
+        <span class="loader-char">L</span>
+        <span class="loader-char">a</span>
+        <span class="loader-char">a</span>
+        <span class="loader-char">s</span>
+        <span class="loader-char">y</span>
+        <span class="loader-char">a</span>
+      </div>
+    </div>
+  </div>
 
   <!-- Interactive background glow -->
   <div id="mouse-glow"></div>
@@ -36,6 +65,9 @@
         <a href="#projects">Projects</a>
         <a href="#github">GitHub</a>
         <a href="#contact">Contact</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme">
+          <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
       </div>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
         <span></span><span></span><span></span>
@@ -78,9 +110,13 @@
           </div>
         </div>
         <div class="hero-image">
-          <div class="image-wrapper">
-            <img src="profile.jpg" alt="Cheerla Sai Laasya Priya">
-            <div class="image-glow"></div>
+          <div class="border-glow-card" id="profileBorderGlow">
+            <span class="edge-light"></span>
+            <div class="border-glow-inner">
+              <div class="image-wrapper">
+                <img src="profile.jpg" alt="Cheerla Sai Laasya Priya">
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -209,10 +245,8 @@
       </div>
       <div class="projects-grid">
         <div class="glass-card project-card animate-on-scroll">
-          <div class="project-card-header">
-            <div class="project-icon">🛍️</div>
-            <a href="https://github.com/Laasya8/Ecommerce" target="_blank" class="project-link"><i
-                class="fas fa-external-link-alt"></i></a>
+          <div class="project-image-wrapper">
+            <img src="luxestyle.png" alt="LuxeStyle E-Commerce Preview">
           </div>
           <div class="project-card-body">
             <h3>LuxeStyle E-Commerce</h3>
@@ -224,13 +258,19 @@
               <span class="project-tag">JWT</span>
               <span class="project-tag">REST API</span>
             </div>
+            <div class="project-buttons">
+              <a href="https://github.com/Laasya8/Ecommerce" target="_blank" class="btn btn-project-github">
+                <i class="fab fa-github"></i> GitHub
+              </a>
+              <a href="https://luxestyle-ten.vercel.app/" target="_blank" class="btn btn-project-demo">
+                <i class="fas fa-external-link-alt"></i> Live Demo
+              </a>
+            </div>
           </div>
         </div>
         <div class="glass-card project-card animate-on-scroll">
-          <div class="project-card-header">
-            <div class="project-icon">🌾</div>
-            <a href="https://github.com/Laasya8/Agrichain" target="_blank" class="project-link"><i
-                class="fas fa-external-link-alt"></i></a>
+          <div class="project-image-wrapper">
+            <img src="agrichain.png" alt="AgriChain Preview">
           </div>
           <div class="project-card-body">
             <h3>AgriChain</h3>
@@ -242,13 +282,19 @@
               <span class="project-tag">Blockchain</span>
               <span class="project-tag">Tailwind CSS</span>
             </div>
+            <div class="project-buttons">
+              <a href="https://github.com/Laasya8/Agrichain" target="_blank" class="btn btn-project-github">
+                <i class="fab fa-github"></i> GitHub
+              </a>
+              <a href="https://agrichain-demo-app.vercel.app/" target="_blank" class="btn btn-project-demo">
+                <i class="fas fa-external-link-alt"></i> Live Demo
+              </a>
+            </div>
           </div>
         </div>
         <div class="glass-card project-card animate-on-scroll">
-          <div class="project-card-header">
-            <div class="project-icon">🏛️</div>
-            <a href="https://github.com/Laasya8/GenSathi" target="_blank" class="project-link"><i
-                class="fas fa-external-link-alt"></i></a>
+          <div class="project-image-wrapper">
+            <img src="gensathi.png" alt="GenSathi Preview">
           </div>
           <div class="project-card-body">
             <h3>GenSathi</h3>
@@ -259,6 +305,14 @@
               <span class="project-tag">Firestore</span>
               <span class="project-tag">Maps API</span>
               <span class="project-tag">Cloudinary</span>
+            </div>
+            <div class="project-buttons">
+              <a href="https://github.com/Laasya8/GenSathi" target="_blank" class="btn btn-project-github">
+                <i class="fab fa-github"></i> GitHub
+              </a>
+              <a href="https://spirit-rho.vercel.app/" target="_blank" class="btn btn-project-demo">
+                <i class="fas fa-external-link-alt"></i> Live Demo
+              </a>
             </div>
           </div>
         </div>
@@ -376,45 +430,30 @@
     </div>
   </footer>
 
-  <!-- AI Chatbot Agent -->
-  <div id="chatbot-widget">
-    <!-- Floating Button -->
-    <button class="chatbot-fab" id="chatbotFab" aria-label="Open AI Assistant">
-      <img src="chatbot-avatar.png" alt="AI Assistant" class="chatbot-fab-avatar">
-      <span class="chatbot-fab-pulse"></span>
-    </button>
+  <!-- Jotform AI Chatbot Agent -->
+  <script src="https://cdn.jotfor.ms/agent/embedjs/019f0fbee55f7999a3d2f567ebe146f0f9e9/embed.js"></script>
 
-    <!-- Chat Window -->
-    <div class="chatbot-window" id="chatbotWindow">
-      <div class="chatbot-header">
-        <div class="chatbot-header-info">
-          <img src="chatbot-avatar.png" alt="Laasya AI" class="chatbot-header-avatar">
-          <div>
-            <div class="chatbot-header-name">Laasya's AI Assistant</div>
-            <div class="chatbot-header-status"><span class="chatbot-status-dot"></span> Online • Portfolio Guide</div>
-          </div>
-        </div>
-        <button class="chatbot-close" id="chatbotClose" aria-label="Close chat">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="chatbot-messages" id="chatbotMessages">
-        <!-- Welcome message injected by JS -->
-      </div>
-      <div class="chatbot-suggestions" id="chatbotSuggestions">
-        <button class="chatbot-suggestion-pill" data-msg="Tell me about Laasya">About Laasya</button>
-        <button class="chatbot-suggestion-pill" data-msg="What are her skills?">Skills & Tech</button>
-        <button class="chatbot-suggestion-pill" data-msg="Show me her projects">Projects</button>
-        <button class="chatbot-suggestion-pill" data-msg="How can I contact her?">Contact Info</button>
-      </div>
-      <div class="chatbot-input-area">
-        <input type="text" id="chatbotInput" placeholder="Ask me anything about Laasya..." autocomplete="off">
-        <button class="chatbot-send" id="chatbotSend" aria-label="Send message">
-          <i class="fas fa-paper-plane"></i>
-        </button>
-      </div>
-    </div>
-  </div>
+  <!-- Custom Interactive Cursor -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-outline" id="cursorOutline"></div>
+
+  <!-- GSAP for Cinematic Loader & 3D Interactions -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+
+  <!-- OGL WebGL Library -->
+  <script src="https://unpkg.com/ogl"></script>
+  <!-- Lightfall Component (Vanilla JS) -->
+  <script src="lightfall.js"></script>
+
+  <!-- Three.js for Professional 3D Scene & Loader -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Portfolio 3D Module -->
+  <script src="three-scene.js"></script>
+  <!-- 3D Cinematic Loader -->
+  <script src="loader-3d.js"></script>
+  
+  <!-- Border Glow Interactive Mesh Component -->
+  <script src="border-glow.js"></script>
 
   <script src="script.js"></script>
 </body>

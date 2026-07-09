@@ -1,3 +1,132 @@
+// ===== Elegant Cinematic Loader (GSAP) =====
+function initCinematicLoader() {
+  const loader = document.getElementById('cinematicLoader');
+  if (!loader || typeof gsap === 'undefined') {
+    if (loader) loader.style.display = 'none';
+    return;
+  }
+
+  // Initialize Lightfall WebGL Background
+  const lightfallContainer = document.getElementById('lightfallContainer');
+  let cleanupLightfall = null;
+  if (lightfallContainer && typeof initLightfall === 'function') {
+    cleanupLightfall = initLightfall(lightfallContainer, {
+      colors: ['#A6C8FF', '#5227FF', '#FF9FFC'],
+      backgroundColor: '#0A29FF',
+      speed: 1,
+      streakCount: 8,
+      streakWidth: 1,
+      streakLength: 1,
+      glow: 1,
+      density: 1,
+      twinkle: 1,
+      zoom: 2,
+      backgroundGlow: 1,
+      opacity: 1,
+      mouseInteraction: true,
+      mouseStrength: 1,
+      mouseRadius: 0.6
+    });
+  }
+
+  const chars = loader.querySelectorAll('.loader-char');
+  const curtainTop = loader.querySelector('.loader-curtain--top');
+  const curtainBottom = loader.querySelector('.loader-curtain--bottom');
+  const center = loader.querySelector('.loader-center');
+  const glow = loader.querySelector('.loader-glow');
+
+  // Set initial states
+  gsap.set(chars, { yPercent: 120, opacity: 0 });
+  gsap.set(glow, { scale: 0.5, opacity: 0 });
+
+  const tl = gsap.timeline({
+    defaults: { ease: 'power3.out' },
+    onComplete: () => {
+      loader.style.display = 'none';
+      if (cleanupLightfall) cleanupLightfall();
+    },
+  });
+
+  // Phase 1: Glow fades in
+  tl.to(glow, {
+    scale: 1,
+    opacity: 1,
+    duration: 1,
+    ease: 'power2.out',
+  }, 0.2);
+
+  // Phase 2: Letters reveal gracefully from bottom
+  tl.to(chars, {
+    yPercent: 0,
+    opacity: 1,
+    duration: 1.2,
+    stagger: 0.08,
+    ease: 'power4.out',
+  }, 0.4);
+
+  // Phase 3: Hold to let the user read the name
+  tl.to({}, { duration: 1.2 });
+
+  // Phase 4: Elegant Exit - letters fade and drift up
+  tl.to(chars, {
+    yPercent: -60,
+    opacity: 0,
+    stagger: { each: 0.04, from: 'edges' },
+    duration: 0.8,
+    ease: 'power3.in',
+  });
+
+  tl.to(center, {
+    scale: 1.15,
+    duration: 0.8,
+    ease: 'power2.in',
+  }, '<');
+
+  tl.to(glow, {
+    scale: 2.5,
+    opacity: 0,
+    duration: 1,
+    ease: 'power2.in',
+  }, '<');
+
+  if (lightfallContainer) {
+    tl.to(lightfallContainer, {
+      opacity: 0,
+      duration: 1.4,
+      ease: 'power2.inOut',
+    }, '<');
+  }
+
+  // Phase 5: Curtains split and dissolve seamlessly into the page
+  tl.to(curtainTop, {
+    yPercent: -100,
+    opacity: 0,
+    duration: 1.4,
+    ease: 'power3.inOut',
+  }, '-=0.2');
+
+  tl.to(curtainBottom, {
+    yPercent: 100,
+    opacity: 0,
+    duration: 1.4,
+    ease: 'power3.inOut',
+  }, '<');
+
+  // Fade out entire loader container for absolute seamless blending
+  tl.to(loader, {
+    opacity: 0,
+    duration: 1.4,
+    ease: 'power3.inOut',
+  }, '<');
+}
+
+// Initialize on DOM + fonts ready
+document.addEventListener('DOMContentLoaded', () => {
+  document.fonts.ready.then(() => {
+    initCinematicLoader();
+  });
+});
+
 // ===== Particle Animation on Canvas =====
 const initParticles = () => {
   const canvas = document.getElementById('particles');
@@ -219,7 +348,82 @@ if (contactForm) {
   });
 }
 
-// ===== Smooth Tilt Effect on Project Cards =====
+// ===== Professional 3D Scene (Three.js) =====
+// Replaces the CSS-based 3D shapes with a real WebGL 3D scene
+let portfolio3D = null;
+
+function initPortfolio3D() {
+  if (typeof Portfolio3D === 'undefined' || typeof THREE === 'undefined') {
+    console.warn('[Portfolio3D] Three.js or Portfolio3D class not loaded yet');
+    return;
+  }
+
+  // Create container for 3D scene
+  const container = document.createElement('div');
+  container.id = 'portfolio-3d-container';
+  container.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;';
+  document.body.prepend(container);
+
+  portfolio3D = new Portfolio3D();
+  portfolio3D.init(container);
+
+  // Update theme on initialization
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  portfolio3D.updateTheme(currentTheme);
+}
+
+// Initialize 3D scene after DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  // Wait a beat for Three.js to load
+  setTimeout(initPortfolio3D, 100);
+});
+
+
+
+// ===== Hero 3D Mouse Parallax =====
+(function initHeroParallax() {
+  const hero = document.querySelector('.hero');
+  const heroContent = document.querySelector('.hero-content');
+  const heroImage = document.getElementById('profileBorderGlow') || document.querySelector('.image-wrapper');
+  if (!hero || !heroContent || !heroImage) return;
+  if (!window.matchMedia("(pointer: fine)").matches) return;
+
+  hero.addEventListener('mousemove', (e) => {
+    const rect = hero.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+    if (typeof gsap !== 'undefined') {
+      gsap.to(heroContent, {
+        rotateY: x * 5,
+        rotateX: -y * 5,
+        transformPerspective: 800,
+        duration: 0.6,
+        ease: 'power2.out',
+      });
+      gsap.to(heroImage, {
+        rotateY: x * -10,
+        rotateX: y * 10,
+        x: x * 25,
+        y: y * 25,
+        transformPerspective: 600,
+        duration: 0.6,
+        ease: 'power2.out',
+      });
+    }
+  });
+
+  hero.addEventListener('mouseleave', () => {
+    if (typeof gsap !== 'undefined') {
+      gsap.to([heroContent, heroImage], {
+        rotateY: 0, rotateX: 0, x: 0, y: 0,
+        duration: 0.8, ease: 'power3.out',
+      });
+    }
+  });
+})();
+
+// ===== Smooth 3D Tilt Effect on Glass Cards =====
 document.querySelectorAll('.glass-card').forEach((card) => {
   card.addEventListener('mousemove', (e) => {
     const rect = card.getBoundingClientRect();
@@ -227,284 +431,126 @@ document.querySelectorAll('.glass-card').forEach((card) => {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    const rotateX = ((y - centerY) / centerY) * -10;
-    const rotateY = ((x - centerX) / centerX) * 10;
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.02)`;
+    const rotateX = ((y - centerY) / centerY) * -8;
+    const rotateY = ((x - centerX) / centerX) * 8;
+
+    if (typeof gsap !== 'undefined') {
+      gsap.to(card, {
+        rotateX, rotateY, y: -8, scale: 1.02,
+        transformPerspective: 800, duration: 0.4, ease: 'power2.out',
+        boxShadow: `${-rotateY * 2}px ${rotateX * 2}px 40px rgba(0,0,0,0.3), 0 0 30px rgba(139, 92, 246, 0.12)`,
+      });
+    } else {
+      card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.02)`;
+    }
+
+    const shineX = (x / rect.width) * 100;
+    const shineY = (y / rect.height) * 100;
+    card.style.setProperty('--shine-x', `${shineX}%`);
+    card.style.setProperty('--shine-y', `${shineY}%`);
   });
+
   card.addEventListener('mouseleave', () => {
-    card.style.transform = '';
+    if (typeof gsap !== 'undefined') {
+      gsap.to(card, {
+        rotateX: 0, rotateY: 0, y: 0, scale: 1, boxShadow: '',
+        duration: 0.6, ease: 'power3.out',
+      });
+    } else {
+      card.style.transform = '';
+    }
   });
 });
 
-// ===== AI Chatbot Widget =====
-(function () {
-  const chatbotFab = document.getElementById('chatbotFab');
-  const chatbotWindow = document.getElementById('chatbotWindow');
-  const chatbotClose = document.getElementById('chatbotClose');
-  const chatbotInput = document.getElementById('chatbotInput');
-  const chatbotSend = document.getElementById('chatbotSend');
-  const chatbotMessages = document.getElementById('chatbotMessages');
-  const chatbotSuggestions = document.getElementById('chatbotSuggestions');
+// ===== Theme Toggle =====
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const htmlElement = document.documentElement;
 
-  if (!chatbotFab || !chatbotWindow) return;
-
-  let isOpen = false;
-  let hasGreeted = false;
-
-  // Knowledge base about Laasya
-  const knowledge = {
-    about: "I'm Cheerla Sai Laasya Priya — a developer driven by curiosity and a love for technology. I enjoy turning complex problems into clean, user-friendly solutions. With a strong foundation in modern development practices, I continuously explore new frameworks, tools, and paradigms. I believe in writing code that is not only functional but also elegant and maintainable.",
-    skills: "Laasya is skilled in: Python (Backend & Scripting), Java (OOP & Applications), JavaScript (Web Development), HTML & CSS (Frontend Design), React (UI Development), Node.js (Server-side JS), SQL (Database Management), Git (Version Control), C/C++ (Systems Programming), and Data Structures & Algorithms.",
-    projects: {
-      luxestyle: "🛍️ LuxeStyle E-Commerce — A premium fashion e-commerce platform with minimalist aesthetics, full shopping flow, JWT-based authentication, and a RESTful API. Built with Node.js, SQLite, JWT, and REST API.",
-      agrichain: "🌾 AgriChain — A farm-to-table supply chain tracker with role-based access, QR code scanning, blockchain verification, Firebase sync, and a mobile-first responsive dashboard. Built with React, Firebase, Blockchain, and Tailwind CSS.",
-      gensathi: "🏛️ GenSathi — A civic complaint management platform with smart duplicate detection, gamified XP system, real-time map tracking, community upvoting, and proof-based resolution. Built with Next.js, Firestore, Maps API, and Cloudinary."
-    },
-    contact: "You can reach Laasya at:\n📧 Email: laasya1106@gmail.com\n🔗 GitHub: github.com/Laasya8\n💼 LinkedIn: linkedin.com/in/sai-laasya-priya/",
-    github: "Laasya's GitHub profile is @Laasya8 with 10+ repositories, 50+ contributions, and proficiency in 5+ languages. She's always building cool stuff, one commit at a time!",
-    resume: "You can download Laasya's resume directly from this portfolio! Look for the 'Download Resume' button in the hero section at the top of the page.",
-    highlights: "Laasya is a Problem Solver (analytical thinking & creative solutions), a Developer (full-stack development enthusiast), a Learner (constantly exploring new tech), and a Team Player (collaboration & communication)."
-  };
-
-  // Normalize text to handle typos: collapse repeated chars, strip noise
-  function normalize(str) {
-    return str
-      .toLowerCase()
-      .replace(/(.)\1+/g, '$1')   // "maail" -> "mail", "helllo" -> "helo"
-      .replace(/[^a-z0-9\s]/g, '') // strip special chars
-      .trim();
+// Load saved theme
+const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
+if (savedTheme === 'light') {
+  htmlElement.setAttribute('data-theme', 'light');
+  if (themeIcon) {
+    themeIcon.classList.remove('fa-moon');
+    themeIcon.classList.add('fa-sun');
   }
+}
 
-  // Test a regex against BOTH raw and normalized input
-  function fuzzyTest(regex, raw, norm) {
-    return regex.test(raw) || regex.test(norm);
-  }
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const isLight = htmlElement.getAttribute('data-theme') === 'light';
 
-  // Fuzzy keyword scoring: check how many topic keywords appear in the text
-  function keywordScore(text, keywords) {
-    const norm = normalize(text);
-    let score = 0;
-    for (const kw of keywords) {
-      if (norm.includes(kw) || text.includes(kw)) score++;
-    }
-    return score;
-  }
-
-  function getResponse(input) {
-    const q = input.toLowerCase().trim();
-    const qn = normalize(q);
-
-    // Greetings
-    if (fuzzyTest(/^(hi|hello|hey|hola|greetings|sup|yo|howdy)/i, q, qn)) {
-      return "Hello! 👋 I'm Laasya's AI assistant. I can tell you about her skills, projects, experience, and more. What would you like to know?";
-    }
-
-    // About
-    if (fuzzyTest(/about|who is|tel.? me about|introduce|background|herself|bio/i, q, qn)) {
-      return knowledge.about;
-    }
-
-    // Skills
-    if (fuzzyTest(/skil|tech|technolog|stack|proficien|language|framework|tool|what (does|can) she (do|use|know)/i, q, qn)) {
-      return knowledge.skills;
-    }
-
-    // Specific project queries
-    if (fuzzyTest(/luxe|e-?commerce|ecommerce|fashion|shopping/i, q, qn)) {
-      return knowledge.projects.luxestyle;
-    }
-    if (fuzzyTest(/agri|farm|supply chain|blockchain|qr/i, q, qn)) {
-      return knowledge.projects.agrichain;
-    }
-    if (fuzzyTest(/gen\s?sathi|civic|complaint|gamif/i, q, qn)) {
-      return knowledge.projects.gensathi;
-    }
-
-    // General projects
-    if (fuzzyTest(/project|built|portfolio|work|created|developed|made/i, q, qn)) {
-      return "Laasya has built some amazing projects:\n\n" +
-        knowledge.projects.luxestyle + "\n\n" +
-        knowledge.projects.agrichain + "\n\n" +
-        knowledge.projects.gensathi;
-    }
-
-    // Contact / Email
-    if (fuzzyTest(/contact|reach|e?mail|connect|linkedin|hire|get in touch|message her|write to/i, q, qn)) {
-      return knowledge.contact;
-    }
-
-    // GitHub
-    if (fuzzyTest(/github|git|repo|open.?source|contribution/i, q, qn)) {
-      return knowledge.github;
-    }
-
-    // Resume
-    if (fuzzyTest(/resume|cv|download|document|pdf/i, q, qn)) {
-      return knowledge.resume;
-    }
-
-    // Education
-    if (fuzzyTest(/education|college|university|degree|study|student|learn/i, q, qn)) {
-      return "Laasya has a strong academic foundation in computer science and technology. She's continuously learning and exploring new areas in tech, from web development to data science.";
-    }
-
-    // Interests
-    if (fuzzyTest(/interest|hobby|hobbies|passion|love|enjoy|free time/i, q, qn)) {
-      return "When Laasya isn't coding, she's exploring the latest in tech, contributing to open-source projects, or learning something new. She's always excited to collaborate on projects that make a positive impact! 🚀";
-    }
-
-    // Highlights / strengths
-    if (fuzzyTest(/strength|highlight|quality|qualities|good at/i, q, qn)) {
-      return knowledge.highlights;
-    }
-
-    // Thank you
-    if (fuzzyTest(/thank|thanks|thx|appreciate|grateful/i, q, qn)) {
-      return "You're welcome! 😊 Feel free to ask anything else about Laasya, or check out the portfolio sections above. Have a great day!";
-    }
-
-    // Goodbye
-    if (fuzzyTest(/bye|goodbye|see you|later|cya/i, q, qn)) {
-      return "Goodbye! 👋 Thanks for visiting Laasya's portfolio. Feel free to come back anytime or reach out via the contact section!";
-    }
-
-    // Data Science
-    if (fuzzyTest(/data\s?science|machine\s?learning|ml|ai|artificial|deep\s?learning/i, q, qn)) {
-      return "Laasya is a Data Science specialist! She has expertise in Python for data analysis and scripting, and continuously explores machine learning and AI technologies. Check out her projects for hands-on implementations!";
-    }
-
-    // Availability
-    if (fuzzyTest(/available|open to|looking for|opportunit|hire|hiring|freelance|intern/i, q, qn)) {
-      return "Yes! Laasya is currently open to opportunities. 🟢 Whether it's internships, collaborations, or full-time roles — she'd love to connect! Reach out at laasya1106@gmail.com or through LinkedIn.";
-    }
-
-    // Fuzzy keyword fallback: try to match the best topic even with heavy typos
-    const topicScores = [
-      { score: keywordScore(q, ['about', 'who', 'her', 'bio', 'intro', 'herself']), response: knowledge.about },
-      { score: keywordScore(q, ['skil', 'tech', 'stack', 'language', 'python', 'java', 'react', 'node', 'sql', 'git', 'html', 'css', 'code']), response: knowledge.skills },
-      { score: keywordScore(q, ['project', 'built', 'made', 'create', 'develop', 'luxe', 'agri', 'sathi']), response: "Laasya has built some amazing projects:\n\n" + knowledge.projects.luxestyle + "\n\n" + knowledge.projects.agrichain + "\n\n" + knowledge.projects.gensathi },
-      { score: keywordScore(q, ['contact', 'mail', 'email', 'reach', 'connect', 'linkedin', 'phone', 'message']), response: knowledge.contact },
-      { score: keywordScore(q, ['github', 'git', 'repo', 'open source', 'commit']), response: knowledge.github },
-      { score: keywordScore(q, ['resume', 'cv', 'download', 'pdf']), response: knowledge.resume },
-      { score: keywordScore(q, ['hire', 'available', 'opportunity', 'intern', 'freelance', 'job', 'work with']), response: "Yes! Laasya is currently open to opportunities. 🟢 Whether it's internships, collaborations, or full-time roles — she'd love to connect! Reach out at laasya1106@gmail.com or through LinkedIn." },
-    ];
-
-    const bestMatch = topicScores.reduce((best, t) => t.score > best.score ? t : best, { score: 0, response: null });
-    if (bestMatch.score > 0) {
-      return bestMatch.response;
-    }
-
-    // Default fallback
-    const fallbacks = [
-      "That's a great question! I'm best at answering about Laasya's skills, projects, and background. Try asking about those! 💡",
-      "Hmm, I'm not sure about that one. But I can tell you all about Laasya's projects, skills, or how to contact her! 🤔",
-      "I'd love to help! Try asking me about Laasya's projects, tech stack, or how to get in touch with her. 😊"
-    ];
-    return fallbacks[Math.floor(Math.random() * fallbacks.length)];
-  }
-
-  function addMessage(text, type) {
-    const msgDiv = document.createElement('div');
-    msgDiv.className = `chatbot-msg ${type}`;
-
-    if (type === 'bot') {
-      msgDiv.innerHTML = `
-        <img src="chatbot-avatar.png" alt="AI" class="chatbot-msg-avatar">
-        <div class="chatbot-msg-bubble">${text.replace(/\n/g, '<br>')}</div>
-      `;
+    if (isLight) {
+      htmlElement.removeAttribute('data-theme');
+      localStorage.setItem('portfolio-theme', 'dark');
+      if (themeIcon) {
+        themeIcon.style.transform = 'rotate(360deg)';
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+      }
+      // Update 3D scene theme
+      if (portfolio3D) portfolio3D.updateTheme('dark');
     } else {
-      msgDiv.innerHTML = `
-        <div class="chatbot-msg-bubble">${text.replace(/\n/g, '<br>')}</div>
-      `;
+      htmlElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('portfolio-theme', 'light');
+      if (themeIcon) {
+        themeIcon.style.transform = 'rotate(360deg)';
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+      }
+      // Update 3D scene theme
+      if (portfolio3D) portfolio3D.updateTheme('light');
     }
 
-    chatbotMessages.appendChild(msgDiv);
-    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-  }
-
-  function showTyping() {
-    const typingDiv = document.createElement('div');
-    typingDiv.className = 'chatbot-msg bot';
-    typingDiv.id = 'chatbot-typing';
-    typingDiv.innerHTML = `
-      <img src="chatbot-avatar.png" alt="AI" class="chatbot-msg-avatar">
-      <div class="chatbot-msg-bubble chatbot-typing">
-        <span></span><span></span><span></span>
-      </div>
-    `;
-    chatbotMessages.appendChild(typingDiv);
-    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-  }
-
-  function removeTyping() {
-    const typing = document.getElementById('chatbot-typing');
-    if (typing) typing.remove();
-  }
-
-  function handleSend() {
-    const text = chatbotInput.value.trim();
-    if (!text) return;
-
-    addMessage(text, 'user');
-    chatbotInput.value = '';
-
-    // Hide suggestions after first message
-    if (chatbotSuggestions) {
-      chatbotSuggestions.style.display = 'none';
-    }
-
-    // Show typing indicator
-    showTyping();
-
-    // Simulate response delay
-    const delay = 600 + Math.random() * 800;
+    // Reset rotation after animation
     setTimeout(() => {
-      removeTyping();
-      const response = getResponse(text);
-      addMessage(response, 'bot');
-    }, delay);
+      if (themeIcon) themeIcon.style.transform = '';
+    }, 400);
+  });
+}
+// ===== Custom Interactive Cursor =====
+const cursorDot = document.getElementById('cursorDot');
+const cursorOutline = document.getElementById('cursorOutline');
+
+if (cursorDot && cursorOutline && window.matchMedia("(pointer: fine)").matches) {
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let outlineX = mouseX;
+  let outlineY = mouseY;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    // Dot instantly follows cursor
+    cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+  });
+
+  // Smooth trail animation for outline
+  function animateCursor() {
+    let distX = mouseX - outlineX;
+    let distY = mouseY - outlineY;
+
+    outlineX += distX * 0.15; // interpolation factor
+    outlineY += distY * 0.15;
+
+    cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px) translate(-50%, -50%)`;
+    requestAnimationFrame(animateCursor);
   }
+  animateCursor();
 
-  // Toggle chat window
-  chatbotFab.addEventListener('click', () => {
-    isOpen = !isOpen;
-    chatbotWindow.classList.toggle('open', isOpen);
+  // Hover states for interactive elements
+  const interactiveElements = document.querySelectorAll('a, button, .project-card, input, textarea');
 
-    if (isOpen && !hasGreeted) {
-      hasGreeted = true;
-      setTimeout(() => {
-        addMessage("Hello! 👋 I'm Laasya's AI assistant. I can help you explore her portfolio, learn about her skills, or find her projects. What would you like to know?", 'bot');
-      }, 400);
-    }
-
-    if (isOpen) {
-      setTimeout(() => chatbotInput.focus(), 400);
-    }
-  });
-
-  // Close chat
-  chatbotClose.addEventListener('click', () => {
-    isOpen = false;
-    chatbotWindow.classList.remove('open');
-  });
-
-  // Send on button click
-  chatbotSend.addEventListener('click', handleSend);
-
-  // Send on Enter key
-  chatbotInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleSend();
-    }
-  });
-
-  // Suggestion pill clicks
-  document.querySelectorAll('.chatbot-suggestion-pill').forEach((pill) => {
-    pill.addEventListener('click', () => {
-      const msg = pill.getAttribute('data-msg');
-      chatbotInput.value = msg;
-      handleSend();
+  interactiveElements.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursorOutline.classList.add('active');
+    });
+    el.addEventListener('mouseleave', () => {
+      cursorOutline.classList.remove('active');
     });
   });
-})();
+}
+
+
